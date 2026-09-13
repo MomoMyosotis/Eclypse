@@ -6,9 +6,8 @@ import app.modules.computer.FileSearch;
 
 public class Filepath {
     
-    public static String FP () {
+    public static String FP (Scanner miao) {
 
-        Scanner miao = new Scanner(System.in);
         System.out.println("\nDo you know the full path?\nanswer: ");
         String knows = miao.nextLine().trim();
         String zighy;
@@ -26,7 +25,6 @@ public class Filepath {
             System.out.println("\nplease type (or paste) here the full path:\n");
             zighy = miao.nextLine().trim();
         }
-        miao.close();
         return zighy;
     }
 }

@@ -3,12 +3,13 @@
 package app.commands.general;
 import app.commands.Command;
 import app.modules.general.Weather;
+import java.util.Scanner;
 
 public class WeatherCmd implements Command {
 
     @Override
-    public void execute(){
-        Weather.weather();
+    public void execute(Scanner miao){
+        Weather.weather(miao);
     }
 }
 

@@ -3,12 +3,13 @@
 package app.commands.computer;
 import app.commands.Command;
 import app.modules.computer.Calendar;
+import java.util.Scanner;
 
 public class CalendarCmd implements Command {
 
     @Override
-    public void execute(){
-        Calendar.organise();
+    public void execute(Scanner miao){
+        Calendar.organise(miao);
     }
 }
 

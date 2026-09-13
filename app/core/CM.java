@@ -7,26 +7,9 @@ import app.commands.Command;
 import app.commands.ai.*;
 import app.commands.general.*;
 import app.commands.computer.*;
-/*/
-import app.commands.computer.SearchFileCmd;
-import app.commands.computer.OpenFileCmd;
-import app.commands.computer.DeleteFileCmd;
-import app.commands.computer.EditFileCmd;
-import app.commands.computer.OpenAppCmd;
-import app.commands.general.layMusicCmd;
-import app.commands.general.SendEmailCmd;
-import app.commands.general.TimeDateCmd;
-import app.commands.general.WeatherCmd;
-import app.commands.general.WebSearchCmd;
-import app.commands.general.WikiCmd;
-import app.commands.general.CalendarCmd;
-import app.commands.ai.VoiceCommandCmd;
-import app.commands.ai.VoiceAnswerCmd;
-import app.commands.ai.OcrCmd;
-import app.commands.ai.ChatbotCmd;
-*/
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class CM {
 
@@ -61,14 +44,14 @@ public class CM {
     }
 
 
-    public static void execute(int quack){
+    public static void execute(int quack, Scanner miao){
 
         Command gioia = commands.get(quack);
         if (gioia == null){
             System.out.println("\nunknown cmd sry ==^.^==");
             return;
         }
-        gioia.execute();
+        gioia.execute(miao);
     }
 }
 

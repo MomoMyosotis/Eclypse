@@ -13,17 +13,15 @@ public class Core {
     }
 
     // GETS THE COMMAND NUMBER
-    public static int start(){
+    public static int start(Scanner miao){
         menu();
         
-        Scanner miao = new Scanner(System.in);
         while (true){
             System.out.println("\n\nrequest: ");
             String temp_cmd = miao.nextLine().trim();
             try {
                 int quackie = Integer.parseInt(temp_cmd);
-                if (quackie >= MIN_CMD && quackie <= MAX_CMD){
-                    //miao.close();
+                if ((quackie >= MIN_CMD && quackie <= MAX_CMD) || (quackie == -1)){
                     return quackie;
                 }
             }
@@ -37,39 +35,27 @@ public class Core {
     // MENÙ
     static void menu (){
         System.out.println(
+
 """
 here's the menù:
         \n
+        \n  |==============|                |==============|
+        \n  | computer lvl |                |  general lvl |
+        \n  |==============|                |==============|
+        \n  1. search files              7. send emails
+        \n  2. open files                    8. time and date
+        \n  3. delete files                  9. wather anywhere
+        \n  4. edit files                    10. search the web
+        \n  5. open apps                     11. answer questions (wiki)
+        \n  6. play music                    12. calendar - TODO list - reminders
         \n
-        \n==============
-        \ncomputer lvl
-        \n==============
-        \n1. search for files
-        \n2. open files
-        \n3. delete files
-        \n4. edit files
-        \n5. open apps
-        \n6. play music
-        \n
-        \n
-        \n==============
-        \ngeneral lvl
-        \n==============
-        \n7. send emails
-        \n8. time and date
-        \n9. wather anywhere
-        \n10. search the web
-        \n11. answer questions (wiki)
-        \n12.calendar - TODO list - reminders
-        \n
-        \n
-        \n==============
-        \ncoming soon lvl:
-        \n==============
-        \nvocal commands
-        \nvocal answers
-        \nOCR
-        \nbasic talking(?)
+        \n  |================|
+        \n  |coming soon lvl |
+        \n  |================|
+        \n  vocal commands
+        \n  vocal answers
+        \n  OCR
+        \n  basic talking(?)\n
     """);
     }
 }

@@ -9,13 +9,10 @@ import java.util.Scanner;
 public class OpenAppCmd implements Command {
 
     @Override
-    public void execute(){
+    public void execute(Scanner miao){
         AppList.lista();
-
-        Scanner miao = new Scanner(System.in);
         System.out.println("\nname app to start: ");
         int zighy = miao.nextInt();
-        miao.close();
         String tp = AppList.getpath(zighy);
         try {
             AppOpen.open(tp);
