@@ -14,15 +14,16 @@ public class Core {
 
     // GETS THE COMMAND NUMBER
     public static int start(){
-        Scanner miao = new Scanner(System.in);
         menu();
         
+        Scanner miao = new Scanner(System.in);
         while (true){
             System.out.println("\n\nrequest: ");
             String temp_cmd = miao.nextLine().trim();
             try {
                 int quackie = Integer.parseInt(temp_cmd);
                 if (quackie >= MIN_CMD && quackie <= MAX_CMD){
+                    //miao.close();
                     return quackie;
                 }
             }

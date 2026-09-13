@@ -57,6 +57,7 @@ public class CM {
         commands.put(14, new VoiceAnswerCmd());
         commands.put(15, new OcrCmd());
         commands.put(16, new ChatbotCmd());
+        // CHESS PLAYER
     }
 
 
