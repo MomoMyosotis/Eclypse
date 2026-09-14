@@ -56,8 +56,8 @@ public class FileSearch {
         ArrayList<FileInfo> quacked = new ArrayList<>();
 
         // da dove inizia a cercare
-        Path directory = Paths.get("/home/myosotis/Desktop");
-        
+        Path directory = Paths.get(System.getProperty("user.home"), "Desktop");
+
         try (Stream<Path> zighy = Files.walk(directory)){
             zighy.forEach(path -> {
                 String name = path.getFileName().toString();

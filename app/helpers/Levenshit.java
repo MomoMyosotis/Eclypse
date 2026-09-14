@@ -38,9 +38,9 @@ public class Levenshit {
                     cd += 0;
                 }
                 else if (specialz(found.charAt(i-1), given.charAt(j-1))){
-                    cd += 2;
+                    cd += 4;
                 } else{
-                    cd +=4;
+                    cd +=10;
                 }
                 cd = matrix[i -1][j-1] +cd;
                 cup = matrix [i-1][j] + penalty;
@@ -65,15 +65,15 @@ public class Levenshit {
 
     static boolean specialz(char found, char given){
         if (
-        (found == 'a') && (given == '4') ||
-        (found == '4') && (given == 'a') ||
-        (found == '3') && (given == 'e') ||
-        (found == 'e') && (given == '3') ||
-        (found == '5') && (given == 's') ||
-        (found == 's') && (given == '5') ||
-        (found == 'o') && (given == '0') ||
-        (found == '0') && (given == 'o')
-    )
+        ((found == 'a') && (given == '4')) ||
+        ((found == '4') && (given == 'a')) ||
+        ((found == '3') && (given == 'e')) ||
+        ((found == 'e') && (given == '3')) ||
+        ((found == '5') && (given == 's')) ||
+        ((found == 's') && (given == '5')) ||
+        ((found == 'o') && (given == '0')) ||
+        ((found == '0') && (given == 'o'))
+        )
         {
             return true;
         }

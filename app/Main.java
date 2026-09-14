@@ -2,16 +2,16 @@
 
 package app;
 import java.util.Scanner;
-
 import app.core.Core;
 import app.core.Dispatcher;
 import app.helpers.Clear;
+import app.platform.PH;
+import app.platform.App;
 
 public class Main {
     public static void main (String[] args){
 
         System.out.println("Eclypse is being loaded...");
-        
         Scanner miao = new Scanner(System.in);
         while (true){
             int command = Core.start(miao);
@@ -20,10 +20,18 @@ public class Main {
                 break;
             }
             Dispatcher.dispatch(command, miao);
-            System.out.println("\npress enter to continue:\n");
+            System.out.print("\npress enter to continue:\n");
             String enter = miao.nextLine();
+            System.out.println("");
         }
+        /*
+                for (App app : PH.getApps()){
+                    if (app != null){
+                    System.out.println(app.getName() + " -> " + app.getId());
+                }
+                }
         System.out.println("\nEclypse closing.");
+            */
     }
 }
 
