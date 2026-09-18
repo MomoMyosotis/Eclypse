@@ -3,30 +3,34 @@
 package app.helpers;
 
 public class Levenshit {
+    private static final int INSERT_COST = 4;
+    private static final int DELETE_COST = 8;
+    private static final int SUBSTITUTE_COST = 3;
+    private static final int SPECIAL_SUBSTITUTE_COST = 1;
+
     private Levenshit(){}
 
         // how many operations do I need to do to change A into B?
     public static int levenstein(String found, String given){
         int score = 0;
-        int penalty = 10;
 
         // in caso di match esattti ma preceduti o seguiti da altre cose es aaaadocumentoaaaa
         int pos = found.indexOf(given);
         if (pos >= 0){
             int rest = found.length() - (pos + given.length());
-            score = 100-(rest *penalty) - (pos *penalty);
+                score = 100-(rest * DELETE_COST) - (pos * DELETE_COST);
             return score;
         }
         int[][] matrix = new int[found.length() +1][given.length() +1];
         int costo = 0;
         // inizializzo colonna 0
         for (int i = 0; i <= found.length() ; i++){
-            matrix[i][0] = i *2;
+            matrix[i][0] = i * DELETE_COST;
         }
 
         // inizializzo riga 0
         for (int j = 0; j <= given.length(); j++){
-            matrix[0][j] = j *2;
+            matrix[0][j] = j * INSERT_COST;
         }
 
         for (int i = 1; i < found.length() +1; i++){
@@ -38,13 +42,13 @@ public class Levenshit {
                     cd += 0;
                 }
                 else if (specialz(found.charAt(i-1), given.charAt(j-1))){
-                    cd += 4;
+                    cd += SPECIAL_SUBSTITUTE_COST;
                 } else{
-                    cd +=10;
+                    cd += SUBSTITUTE_COST;
                 }
                 cd = matrix[i -1][j-1] +cd;
-                cup = matrix [i-1][j] + penalty;
-                csx = matrix [i][j-1] + penalty;
+                cup = matrix [i-1][j] + DELETE_COST;
+                csx = matrix [i][j-1] + INSERT_COST;
                 matrix [i][j] = min(cd, cup, csx);
             }
         }

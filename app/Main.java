@@ -5,13 +5,16 @@ import java.util.Scanner;
 import app.core.Core;
 import app.core.Dispatcher;
 import app.helpers.Clear;
-import app.platform.PH;
-import app.platform.App;
+import app.helpers.Config;
 
 public class Main {
     public static void main (String[] args){
 
         System.out.println("Eclypse is being loaded...");
+        if(!Config.Check()){
+            Config.Update();
+            }
+
         Scanner miao = new Scanner(System.in);
         while (true){
             int command = Core.start(miao);
@@ -21,17 +24,9 @@ public class Main {
             }
             Dispatcher.dispatch(command, miao);
             System.out.print("\npress enter to continue:\n");
-            String enter = miao.nextLine();
+            miao.nextLine();
             System.out.println("");
         }
-        /*
-                for (App app : PH.getApps()){
-                    if (app != null){
-                    System.out.println(app.getName() + " -> " + app.getId());
-                }
-                }
-        System.out.println("\nEclypse closing.");
-            */
     }
 }
 

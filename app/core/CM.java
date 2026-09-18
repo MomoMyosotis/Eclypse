@@ -7,51 +7,79 @@ import app.commands.Command;
 import app.commands.ai.*;
 import app.commands.general.*;
 import app.commands.computer.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 public class CM {
 
     private CM (){}
 
-    private static final Map<Integer, Command> commands = new HashMap<>();
+    private static final List<CommandItem> commands = new ArrayList<>();
 
     static {
 
         // COMPUTER
-        commands.put(1, new SearchFileCmd());
-        commands.put(2, new OpenFileCmd());
-        commands.put(3, new DeleteFileCmd());
-        commands.put(4, new EditFileCmd());
-        commands.put(5, new OpenAppCmd());
-        commands.put(6, new PlayMusicCmd());
+        register("computer", "search files", new SearchFileCmd());
+        register("computer", "open files", new OpenFileCmd());
+        register("computer", "delete files", new DeleteFileCmd());
+        register("computer", "edit files", new EditFileCmd());
+        register("computer", "open apps", new OpenAppCmd());
+        register("computer", "image/file converters", new ConverterCmd());
 
         // GENERAL
-        commands.put(7, new SendEmailCmd());
-        commands.put(8, new TimeDateCmd());
-        commands.put(9, new WeatherCmd());
-        commands.put(10, new WebSearchCmd());
-        commands.put(11, new WikiCmd());
-        commands.put(12, new CalendarCmd());
+        register("general", "send emails", new SendEmailCmd());
+        register("general", "time and date", new TimeDateCmd());
+        register("general", "weather anywhere", new WeatherCmd());
+        register("general", "search the web", new WebSearchCmd());
+        register("general", "answer questions (wiki)", new WikiCmd());
+        register("general", "calendar - TODO list - reminders", new CalendarCmd());
+        register("general", "play music", new PlayMusicCmd());
 
         // AI / COMING SOON
-        commands.put(13, new VoiceCommandCmd());
-        commands.put(14, new VoiceAnswerCmd());
-        commands.put(15, new OcrCmd());
-        commands.put(16, new ChatbotCmd());
-        // CHESS PLAYER
+        register("coming soon", "vocal commands", new VoiceCommandCmd());
+        register("coming soon", "vocal answers", new VoiceAnswerCmd());
+        register("coming soon", "OCR", new OcrCmd());
+        register("coming soon", "basic talking(?)", new ChatbotCmd());
+
+        // CHESS PLAYER (machine learning?)
     }
 
+    private static void register(String category, String label, Command command){
+        commands.add(new CommandItem(commands.size() + 1, category, label, command));
+    }
 
-    public static void execute(int quack, Scanner miao){
+    public static List<CommandItem> all(){
+        return Collections.unmodifiableList(commands);
+    }
 
-        Command gioia = commands.get(quack);
-        if (gioia == null){
+    public static boolean contains(int number){
+        return number >= 1 && number <= commands.size();
+    }
+
+    public static void printMenu(){
+        String currentCategory = "";
+        System.out.println("\nhere's the menu:\n");
+        for (CommandItem item : commands){
+            if (!item.category().equals(currentCategory)){
+                currentCategory = item.category();
+                System.out.println("\n[" + currentCategory + "]");
+            }
+            System.out.printf("  %d. %s%n", item.number(), item.label());
+        }
+    }
+
+    public static void execute(int number, Scanner miao){
+
+        if (!contains(number)){
             System.out.println("\nunknown cmd sry ==^.^==");
             return;
         }
-        gioia.execute(miao);
+        commands.get(number - 1).command().execute(miao);
+    }
+
+    public record CommandItem(int number, String category, String label, Command command) {
     }
 }
 

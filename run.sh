@@ -1,5 +1,7 @@
 #!/bin/bash
 
-javac -d out app/Main.java app/core/*.java app/commands/*.java app/helpers/*.java app/modules/computer/*.java app/modules/general/*.java app/modules/ai/*.java app/platform/*.java
+rm -rf out
+mkdir -p out
+javac -d out $(find app -name '*.java' -type f)
 
 java -cp out app.Main
