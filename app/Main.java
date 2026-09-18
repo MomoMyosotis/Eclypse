@@ -11,9 +11,11 @@ public class Main {
     public static void main (String[] args){
 
         System.out.println("Eclypse is being loaded...");
-        if(!Config.Check()){
-            Config.Update();
-            }
+        
+        if (!Config.Check()){
+            System.out.println("some of the dependencies required cannot be configurated.\nERR 01");
+            return;
+        }
 
         Scanner miao = new Scanner(System.in);
         while (true){
