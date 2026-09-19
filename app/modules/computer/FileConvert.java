@@ -4,7 +4,7 @@ package app.modules.computer;
 import java.lang.ProcessBuilder;
 import java.io.File;
 import java.io.IOException;
-import app.helpers.Platform;
+import app.config.Config;
 
     public class FileConvert{
     private FileConvert(){}
@@ -16,12 +16,7 @@ import app.helpers.Platform;
             return;
         }
         try{
-            String cmd = "python3";
-            String os = Platform.CURRENT_OS.toString().toLowerCase();
-            if (os.equals("windows")){
-                cmd = "python";
-            }
-            Process dommymommy = new ProcessBuilder(cmd, "app/helpers/Convert.py", path, turninto).start();
+            Process dommymommy = new ProcessBuilder(Config.getPy(), "app/helpers/Convert.py", path, turninto).inheritIO().start();
             try {
                 int esito = dommymommy.waitFor();
                 if (esito != 0){

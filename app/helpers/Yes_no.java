@@ -7,21 +7,23 @@ public class Yes_no {
 
     public static boolean yes_no(String z){
 
-        if((z == "yes") ||
-            (z == "yup") ||
-            (z == "y") ||
-            (z == "1") ||
-            (z == "sure") ||
-            (z == "yep") ||
-            (z == "sì") ||
-            (z == "si") ||
+        if(z.equals("") ||
+            (z.equals("yes")) ||
+            (z.equals("yup")) ||
+            (z.equals("y")) ||
+            (z.equals("1")) ||
+            (z.equals("sure")) ||
+            (z.equals("yep")) ||
+            (z.equals("sì")) ||
+            (z.equals("si")) ||
+            (z.equals("k")) ||
+            (z.contains("ok")) ||
             (z.contains("yes")) ||
             (z.contains("yup"))||
             (z.contains("sì")) ||
             (z.contains("si"))){
             return true;
         }
-
         return false;
     }
 }

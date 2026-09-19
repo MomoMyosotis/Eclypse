@@ -11,7 +11,7 @@ public class Filepath {
         System.out.println("\nDo you know the full path?\nanswer: ");
         String knows = miao.nextLine().trim();
         String zighy;
-        if (Yes_no.yes_no(knows)){
+        if (Yes_no.yes_no(knows) == true){
             System.out.println("\nfiles full path (with name and format): ");
             zighy = miao.nextLine().trim();
         } else{
