@@ -3,14 +3,12 @@
 rmdir /s /q out 2>nul
 mkdir out
 
-setlocal EnableDelayedExpansion
-set "FILES="
-
 for /r app %%f in (*.java) do (
+    echo %%f
     set "FILES=!FILES! "%%f""
 )
 
-javac -d out !FILES!
+javac -d out %FILES%
 
 if errorlevel 1 (
     echo.
