@@ -1,10 +1,13 @@
+```bat
 @echo off
+setlocal enabledelayedexpansion
 
 rmdir /s /q out 2>nul
 mkdir out
 
+set "FILES="
+
 for /r app %%f in (*.java) do (
-    echo %%f
     set "FILES=!FILES! "%%f""
 )
 
@@ -18,3 +21,6 @@ if errorlevel 1 (
 )
 
 java -cp out app.Main
+
+endlocal
+```

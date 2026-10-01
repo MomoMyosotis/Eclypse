@@ -2,9 +2,11 @@
 
 package app.modules.computer;
 import java.lang.ProcessBuilder;
+
+import app.config.dependencies.Config;
+
 import java.io.File;
 import java.io.IOException;
-import app.config.Config;
 
     public class FileConvert{
     private FileConvert(){}

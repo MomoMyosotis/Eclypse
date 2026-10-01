@@ -1,6 +1,6 @@
 // first line
 
-package app.config;
+package app.config.dependencies;
 import java.io.IOException;
 
 import app.helpers.general.Platform;
@@ -26,10 +26,12 @@ public class Config {
         return cmd;
     }
 
+    private static final String PYTHON_PATH =  "app/config/dependencies/PyConfig.py";
+
     public static boolean Check(){
 
         try{
-            Process dommymommy = new ProcessBuilder(getSysPy(), "app/config/PyConfig.py").start();
+            Process dommymommy = new ProcessBuilder(getSysPy(), PYTHON_PATH).start();
             // for debug:
             // Process dommymommy = new ProcessBuilder(getSysPy(), "app/config/PyConfig.py").inheritIO().start();
 

@@ -7,7 +7,7 @@ def main():
     print("Checking Python environment...")
 
     config_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(os.path.dirname(config_dir))
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(config_dir)))
     requirements = os.path.join(config_dir, "requirements.txt")
     venv_dir = os.path.join(project_root, ".venv")
 

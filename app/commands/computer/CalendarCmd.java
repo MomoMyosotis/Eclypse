@@ -10,6 +10,7 @@ public class CalendarCmd implements Command {
     @Override
     public void execute(Scanner miao){
         Calendar.organise(miao);
+        
     }
 }
 

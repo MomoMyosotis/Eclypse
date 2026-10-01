@@ -5,12 +5,9 @@ import app.helpers.general.Levenshit;
 import app.helpers.general.SelectionSort;
 
 import java.util.ArrayList;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.io.IOException;
-import java.util.stream.Stream;
-
+import java.nio.file.attribute.BasicFileAttributes;
 
 public class FileSearch {
 
@@ -60,23 +57,29 @@ public class FileSearch {
         // da dove inizia a cercare
         Path directory = Paths.get(System.getProperty("user.home"));
 
-        try (Stream<Path> zighy = Files.walk(directory)){
-            zighy.forEach(path -> {
-                String name = path.getFileName().toString();
-                String percorso = path.toString();
-                int score = valid(name, ts);
-                if (score != -1){
-                    
-                    // ora creo l'oggetto
-                    FileInfo miao = new FileInfo(name, percorso, score);
-                    // aggiungo alla lista
-                    quacked.add(miao);
+        try {
+            Files.walkFileTree(directory, new SimpleFileVisitor<Path>(){
+                @Override
+                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs){
+                    String name = path.getFileName().toString();
+                    String percorso = path.toString();
+                    int score = valid(name, ts);
+
+                    if (score != -1){
+                        FileInfo miao = new FileInfo(name, percorso, score);
+                        quacked.add(miao);
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFileFailed(Path path, IOException e){
+                    return FileVisitResult.SKIP_SUBTREE;
                 }
             });
         } catch( IOException e){
             e.printStackTrace();
         }
-
         // ritorna la lista ordinata e completa
         return quacked;
     }
