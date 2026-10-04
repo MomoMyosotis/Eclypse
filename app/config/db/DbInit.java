@@ -4,35 +4,24 @@ package app.config.db;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.nio.file.*;
 import java.sql.*;
 
 public class DbInit {
     private DbInit() {}
     
-    private static final String FILE_NAME = "database.sql";
+    private static final String FILE_NAME = "app/config/db/database.sql";
     
-    public static void init(){
-        /*
-        1. gets connection
-        2. create "TYPE" table (if not exists)
-        3. create "DATA" table (if not exists)
-        4. inserisce elementi (B-Day || appointment || remind)
-        5. legge elementi
-        6. modifica elementi
-        7. elimina elementi
-        */
-
-        String path = DbConfig.Get_Db_Path();
-
+    public static boolean init(){
         try {
             Connection c = DbHandler.getConnection();
-            if (!DbConfig.DbValid()){
+            if (!DbConfig.DbValid() || !DbConfig.DbExists()){
                 crea_db(c);
             }
         } catch (Exception e){
-            e.printStackTrace();;
+            e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     static void exec(Connection c, String query){

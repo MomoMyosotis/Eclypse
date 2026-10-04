@@ -2,9 +2,9 @@
 
 package app.helpers.local;
 import java.util.Scanner;
-
 import app.helpers.events.InputReader;
 import app.modules.computer.FileSearch;
+
 public class Filepath {
     
     public static String FP (Scanner miao) {

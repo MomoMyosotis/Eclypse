@@ -7,6 +7,7 @@ import app.helpers.general.Platform;
 
 public class Config {
     private Config (){}
+    private static final String PYTHON_PATH =  "app/config/dependencies/PyConfig.py";
 
     public static String getPy(){
         String cmd = ".venv/bin/python";
@@ -26,31 +27,27 @@ public class Config {
         return cmd;
     }
 
-    private static final String PYTHON_PATH =  "app/config/dependencies/PyConfig.py";
-
     public static boolean Check(){
-
-        try{
+        try {
             Process dommymommy = new ProcessBuilder(getSysPy(), PYTHON_PATH).start();
             // for debug:
-            // Process dommymommy = new ProcessBuilder(getSysPy(), "app/config/PyConfig.py").inheritIO().start();
+            // Process dommymommy = new ProcessBuilder(getSysPy(), PYTHON_PATH).inheritIO().start();
 
-            try {
-                int esito = dommymommy.waitFor();
-                if (esito != 0){
-                    System.out.println("\nSomething went wrong ==^.^==");
-                    return false;
-                }
-            }
-            catch  (InterruptedException a){
-                System.out.println("\nERR 48\n" +a);
+            int esito = dommymommy.waitFor();
+            if (esito != 0){
+                System.out.println("\nSomething went wrong ==^.^==");
                 return false;
             }
-        } catch (IOException a){
-            System.out.println("err in configuration.\n"+a);
+        }
+        catch  (InterruptedException a){
+            System.out.println("\nERR 48\n" +a);
             return false;
-    }
-    return true;
+        }
+        catch (IOException a){
+            System.out.println("err in configuration. ERR 49\n"+a);
+            return false;
+        }
+        return true;
     }
 }
 

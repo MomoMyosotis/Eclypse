@@ -48,7 +48,7 @@ public class FileSearch {
     }
 
     // funzione che si occupa della ricerca
-    static ArrayList<FileInfo> searchinator (String ts){
+    public static ArrayList<FileInfo> searchinator (String ts){
 
         System.out.println("\nsearching...");
         // trovati i risultati vanno messi in una ArrayList

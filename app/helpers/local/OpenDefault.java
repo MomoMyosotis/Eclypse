@@ -3,7 +3,6 @@
 package app.helpers.local;
 import java.awt.Desktop;
 import java.net.URI;
-
 import app.helpers.web.HttpHandler;
 
 public class OpenDefault {
@@ -34,7 +33,7 @@ public class OpenDefault {
         return e.toString();
     }
     return url;
-}
+    }
 }
 
 // last line

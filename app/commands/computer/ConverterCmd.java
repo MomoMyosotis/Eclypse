@@ -2,6 +2,8 @@
 
 package app.commands.computer;
 import app.commands.Command;
+
+import java.io.IOException;
 import java.util.Scanner;
 import app.modules.computer.FileConvert;
 import app.helpers.events.InputReader;
@@ -15,6 +17,7 @@ public class ConverterCmd implements Command{
         String format = path.split("\\.")[1].toLowerCase();
         String turninto = format; // così di default non fa niente e ci risparmiamo rogne
         System.out.print("\nfile's extention is: "+ format + ".\nyou can turn it into a: ");
+
         if (format.equals("odt")){
             System.out.print(".pdf");
             turninto = "pdf";
@@ -40,6 +43,7 @@ public class ConverterCmd implements Command{
             System.out.print("ehn... as it turns out, we still haven't prepared for this specific extension. feel free to contact  us so we can fix it.\n _Myosotis");
             return;
         }
+
         System.out.print("\nproceed?  choice: ");
         String choice = miao.nextLine();
         System.out.println("\n");
@@ -47,7 +51,11 @@ public class ConverterCmd implements Command{
             System.out.println("\nuser decided NOT to convert.\n");
             return;
         }
-        FileConvert.converter(path, turninto);
+        try {
+            FileConvert.converter(path, turninto);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
         System.out.println("\nfile converted.\n");
     }
 }

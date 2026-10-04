@@ -7,7 +7,6 @@ public class InputReader {
     private InputReader(){}
 
     public static String WhatTs(Scanner miao){
-        System.out.println("what to look for?");
         String ts = miao.nextLine();
         return ts;
     }

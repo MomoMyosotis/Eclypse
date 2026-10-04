@@ -8,11 +8,11 @@ def main():
 
     config_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(os.path.dirname(os.path.dirname(config_dir)))
-    requirements = os.path.join(config_dir, "requirements.txt")
+    requirements = os.path.join(config_dir, "PyReq.txt")
     venv_dir = os.path.join(project_root, ".venv")
 
     if not os.path.isfile(requirements):
-        sys.stderr.write(f"requirements.txt not found: {requirements}\n")
+        sys.stderr.write(f"PyReq.txt not found: {requirements}\n")
         return 1
 
     if os.name == "nt":

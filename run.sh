@@ -5,7 +5,7 @@ rm -rf out
 mkdir -p out
 
 # Compile every Java source file under app/
-find app -name "*.java" -print0 | xargs -0 javac -d out
+find app -name "*.java" -print0 | xargs -0 javac -cp "lib/*" -d out
 
 if [ $? -ne 0 ]; then
     echo
@@ -14,5 +14,5 @@ if [ $? -ne 0 ]; then
 fi
 
 # Run Eclypse
-java -cp out app.Main
+java -cp "out:lib/*" app.Main
 

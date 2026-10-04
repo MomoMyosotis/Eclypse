@@ -2,23 +2,23 @@
 
 package app.modules.computer;
 import java.lang.ProcessBuilder;
-
 import app.config.dependencies.Config;
-
 import java.io.File;
 import java.io.IOException;
 
     public class FileConvert{
     private FileConvert(){}
 
-    public static void converter(String path, String turninto){
+    private static final String CONVERT_PATH = "app/helpers/local/Convert.py";
+
+    public static void converter(String path, String turninto) throws IOException{
         File quack = new File(path);
         if (!quack.exists()){
             System.out.println("\nfile not found, sry");
             return;
         }
-        try{
-            Process dommymommy = new ProcessBuilder(Config.getPy(), "app/helpers/Convert.py", path, turninto).inheritIO().start();
+
+            Process dommymommy = new ProcessBuilder(Config.getPy(), CONVERT_PATH, path, turninto).inheritIO().start();
             try {
                 int esito = dommymommy.waitFor();
                 if (esito != 0){
@@ -28,9 +28,6 @@ import java.io.IOException;
             catch  (InterruptedException a){
                 System.out.println("\nERR 48\n" +a);
             }
-        } catch (IOException e){
-            System.out.println("\nERR 49\n" + e);
-        }
     }
 }
 

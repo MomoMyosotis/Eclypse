@@ -11,7 +11,7 @@ for /r app %%f in (*.java) do (
     set "FILES=!FILES! "%%f""
 )
 
-javac -d out %FILES%
+javac -cp "lib/*" -d out %FILES%
 
 if errorlevel 1 (
     echo.
@@ -20,7 +20,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-java -cp out app.Main
+java -cp "out;lib/*" app.Main
 
 endlocal
 ```

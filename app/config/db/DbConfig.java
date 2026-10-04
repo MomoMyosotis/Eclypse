@@ -8,7 +8,7 @@ import java.sql.*;
 public class DbConfig {
     private DbConfig(){}
 
-    private static final String DB_NAME = "Eclypse.db";
+    private static final String DB_NAME = "app/config/db/Eclypse.db";
     private static final String TYPE = """
             SELECT name
             FROM sqlite_master
@@ -23,8 +23,6 @@ public class DbConfig {
             """;
 
     public static String Get_Db_Path(){
-
-        // configuration
         return DB_NAME;
     }
 
@@ -37,13 +35,15 @@ public class DbConfig {
             Connection c = DbHandler.getConnection();
             Statement st = c.createStatement();
             ResultSet type = st.executeQuery(TYPE);
-            if (type.next()){
+            if (!type.next()){
                 return false;
             }
+            st.close();
             ResultSet data = st.executeQuery(DATA);
-            if (data.next()){
+            if (!data.next()){
                 return false;
             }
+            st.close();
             return true;
         } catch (SQLException e){
             e.printStackTrace();
