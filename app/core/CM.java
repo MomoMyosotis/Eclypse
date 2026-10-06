@@ -42,12 +42,15 @@ public class CM {
         register("general", "calendar - TODO list - reminders", new CalendarCmd());
         register("general", "send emails", new SendEmailCmd());
 
-        // AI / COMING SOON
-        register("coming soon", "vocal commands", new VoiceCommandCmd());
-        register("coming soon", "vocal answers", new VoiceAnswerCmd());
-        register("coming soon", "OCR", new OcrCmd());
+        // AI
+        register("AI", "vocal commands", new VoiceCommandCmd());
+        register("AI", "vocal answers", new VoiceAnswerCmd());
+        register("AI", "OCR", new OcrCmd());
 
         // CHESS PLAYER (machine learning?)
+        // register("games", "chess", new ChessCmd());
+        // register("games", "tick-tack-toe", new TTTCmd());
+        // register("games", "campo fiorito", new CFCmd());
     }
 
     private static void register(String category, String label, Command command){
