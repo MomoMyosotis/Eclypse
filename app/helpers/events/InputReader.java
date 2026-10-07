@@ -10,6 +10,11 @@ public class InputReader {
         String ts = miao.nextLine();
         return ts;
     }
+
+    public static int WhatTsInt(Scanner miao){
+        int i = miao.nextInt();
+        return i;
+    }
     
     public static boolean yes_no(String z){
         if(z.equals("") ||

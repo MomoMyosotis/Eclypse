@@ -7,8 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import app.helpers.events.Event;
 import java.util.ArrayList;
+
+import app.helpers.calendar.Event;
 
 public class DbHandler {
     private DbHandler(){}
@@ -38,6 +39,12 @@ public class DbHandler {
                 WHERE 
                 """;
 
+        private static final String FIND = """
+                SELECT tipo
+                FROM TYPE
+                WHERE id = ?
+                """;
+
         private final static String EVENTO = "evento = ?";
         private final static String OBJ = "obj = ?";
         private final static String QUANDO = "quando = ?";
@@ -59,7 +66,7 @@ public class DbHandler {
         return q;
     }
 
-    public static void Create(Event gioie){
+    public static boolean Create(Event gioie){
         try {
             Connection c = getConnection();
             PreparedStatement bs = c.prepareStatement(CREA);
@@ -76,9 +83,10 @@ public class DbHandler {
                 bs.setBoolean(4, gioie.GetDone());
             }
             bs.setString(5, gioie.GetCreated().toString());
-            bs.executeUpdate();
+            return bs.executeUpdate() > 0;
         } catch (SQLException e){
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -115,7 +123,7 @@ public class DbHandler {
             ArrayList<Object> values = new ArrayList<>();
             Connection c = getConnection();
             int count = 0;
-            if (e.event() <4 && e.event() > 0){
+            if (e.event() != null && e.event() <4 && e.event() > 0){
             count +=1;
             query = cAnd(count, query) + EVENTO;
             values.add(e.event());
@@ -165,7 +173,7 @@ public class DbHandler {
         return res;
     }
 
-    public static void Update(Event gioie){
+    public static boolean Update(Event gioie){
         try {
             Connection c = getConnection();
             PreparedStatement bs = c.prepareStatement(UPDATE);
@@ -183,20 +191,39 @@ public class DbHandler {
             }
             bs.setString(5, gioie.GetCreated().toString());
             bs.setInt(6, gioie.GetId());
-            bs.executeUpdate();
+            return bs.executeUpdate() > 0;
         } catch (SQLException e){
             e.printStackTrace();
+            return false;
         }
     }
 
-    public static void Kill(int id){
+    public static boolean Kill(int id){
         try {
             Connection c = getConnection();
             PreparedStatement bs = c.prepareStatement(DELETE);
             bs.setInt(1, id);
-            bs.executeUpdate();
+            return bs.executeUpdate() > 0;
         } catch (SQLException e){
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static String Tipo(int id){
+            String res = "";
+        try {
+            Connection c = getConnection();
+            PreparedStatement bs = c.prepareStatement(FIND);
+            bs.setInt(1, id);
+            ResultSet rawr = bs.executeQuery();
+            if(rawr.next()){
+                return rawr.getString("tipo");
+            }
+            return res;
+        } catch (SQLException e){
+            e.printStackTrace();
+            return res;
         }
     }
 }

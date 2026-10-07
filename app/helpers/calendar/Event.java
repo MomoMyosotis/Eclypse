@@ -1,17 +1,17 @@
 // first line
 
-package app.helpers.events;
+package app.helpers.calendar;
 import java.time.LocalDate;
 
 public class Event{
-    private int id;
-    private int event;
+    private Integer id;
+    private Integer event;
     private String obj;
     private LocalDate when;
     private Boolean done;
     private LocalDate created;
 
-    public Event(int id, int event, String obj, LocalDate when, Boolean done, LocalDate created){
+    public Event(Integer id, Integer event, String obj, LocalDate when, Boolean done, LocalDate created){
         this.id = id;
         this.event = event;
         this.obj = obj;
@@ -20,10 +20,10 @@ public class Event{
         this.created = created;
     }
 
-    public int GetId(){
+    public Integer GetId(){
         return id;
     }
-    public int event(){
+    public Integer event(){
         return event;
     }
     public String GetObj(){

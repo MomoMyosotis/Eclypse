@@ -1,6 +1,5 @@
 package app.config.db;
 
-import app.helpers.events.Event;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+
+import app.helpers.calendar.Event;
 
 public final class DbStressTest {
     private static final int MAX_LIVE_EVENTS = 200;
