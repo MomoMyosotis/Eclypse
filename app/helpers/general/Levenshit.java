@@ -12,49 +12,74 @@ public class Levenshit {
 
         // how many operations do I need to do to change A into B?
     public static int levenstein(String found, String given){
-        int score = 0;
+        int substringScore = substringScore(found, given);
+        if (substringScore != Integer.MIN_VALUE){
+            return substringScore;
+        }
+        return 100 - distance(found, given, Integer.MAX_VALUE);
+    }
 
-        // in caso di match esattti ma preceduti o seguiti da altre cose es aaaadocumentoaaaa
+    public static int scoreAboveThreshold(String found, String given, int threshold){
+        int substringScore = substringScore(found, given);
+        if (substringScore != Integer.MIN_VALUE){
+            return substringScore > threshold ? substringScore : -1;
+        }
+
+        int maxCost = 99 - threshold;
+        if (maxCost < 0){
+            return -1;
+        }
+        long lengthDifference = (long) found.length() - given.length();
+        long minimumLengthCost = lengthDifference > 0
+            ? lengthDifference * DELETE_COST
+            : -lengthDifference * INSERT_COST;
+        if (minimumLengthCost > maxCost){
+            return -1;
+        }
+        int cost = distance(found, given, maxCost);
+        return cost <= maxCost ? 100 - cost : -1;
+    }
+
+    private static int substringScore(String found, String given){
         int pos = found.indexOf(given);
-        if (pos >= 0){
-            int rest = found.length() - (pos + given.length());
-                score = 100-(rest * DELETE_COST) - (pos * DELETE_COST);
-            return score;
+        if (pos < 0){
+            return Integer.MIN_VALUE;
         }
-        int[][] matrix = new int[found.length() +1][given.length() +1];
-        int costo = 0;
-        // inizializzo colonna 0
-        for (int i = 0; i <= found.length() ; i++){
-            matrix[i][0] = i * DELETE_COST;
-        }
+        int rest = found.length() - (pos + given.length());
+        return 100 - (rest * DELETE_COST) - (pos * DELETE_COST);
+    }
 
-        // inizializzo riga 0
+    private static int distance(String found, String given, int maxCost){
+        int[] previous = new int[given.length() + 1];
+        int[] current = new int[given.length() + 1];
         for (int j = 0; j <= given.length(); j++){
-            matrix[0][j] = j * INSERT_COST;
+            previous[j] = j * INSERT_COST;
         }
 
-        for (int i = 1; i < found.length() +1; i++){
-            for (int j = 1; j < given.length() +1; j++){
-                int cd = 0;
-                int cup = 0;
-                int csx = 0;
-                if (found.charAt(i -1) == given.charAt(j -1)){
-                    cd += 0;
-                }
-                else if (specialz(found.charAt(i-1), given.charAt(j-1))){
-                    cd += SPECIAL_SUBSTITUTE_COST;
-                } else{
-                    cd += SUBSTITUTE_COST;
-                }
-                cd = matrix[i -1][j-1] +cd;
-                cup = matrix [i-1][j] + DELETE_COST;
-                csx = matrix [i][j-1] + INSERT_COST;
-                matrix [i][j] = min(cd, cup, csx);
+        for (int i = 1; i <= found.length(); i++){
+            current[0] = i * DELETE_COST;
+            int rowMinimum = current[0];
+            for (int j = 1; j <= given.length(); j++){
+                int substitutionCost = found.charAt(i - 1) == given.charAt(j - 1)
+                    ? 0
+                    : specialz(found.charAt(i - 1), given.charAt(j - 1))
+                        ? SPECIAL_SUBSTITUTE_COST
+                        : SUBSTITUTE_COST;
+                int diagonal = previous[j - 1] + substitutionCost;
+                int deletion = previous[j] + DELETE_COST;
+                int insertion = current[j - 1] + INSERT_COST;
+                current[j] = min(diagonal, deletion, insertion);
+                rowMinimum = Math.min(rowMinimum, current[j]);
             }
+            if (rowMinimum > maxCost){
+                return maxCost == Integer.MAX_VALUE ? rowMinimum : maxCost + 1;
+            }
+
+            int[] temp = previous;
+            previous = current;
+            current = temp;
         }
-        costo = matrix[found.length()][given.length()];
-        score = 100 - costo;
-        return score;
+        return previous[given.length()];
     }
 
     static int min( int a, int b, int c){

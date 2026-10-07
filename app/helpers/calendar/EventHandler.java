@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.ArrayList;
 import app.config.db.DbHandler;
+import app.helpers.events.InputReader;
 
 public class EventHandler {
     private EventHandler(){}
@@ -96,30 +97,49 @@ public class EventHandler {
         }
     }
 
-    // ABE .> Automatic Build Event
-    private static Event ABE (Integer id, Integer event, String obj, LocalDate d, Boolean done, LocalDate created){
+    // ABE -> Automatic Build Event
+    public static Event ABE (Integer id, Integer event, String obj, LocalDate d, Boolean done, LocalDate created){
         return new Event(id, event, obj, d, done, created);
     }
 
-    // MBE -> Build Event
+    // MBE -> Manual Build Event
     private static Event MBE(Scanner miao, LocalDate d){
-        int event = 0;
-        while (event < 1 || event > 3){
-            System.out.print("event table: 1 = bday 2 = appointment 3 = reminder: ");
+        Integer event = 0;
+
+        while (true){
+            System.out.print("event table: 1 = bday 2 = appointment 3 = reminder [ENTER] = all types (only for search (default 2)\nchoice: ");
             String value = miao.nextLine();
-            try {
+            if (value.isEmpty()){
+                event = null;
+                break;
+            }
+            try{
                 event = Integer.parseInt(value);
+                if (event > 0 || event < 4){
+                    break;
+                }
             } catch (NumberFormatException e){
-                event = 0;
+                e.printStackTrace();
             }
-            if (event < 1 || event > 3){
-                System.out.println("invalid value.");
-            }
+            System.out.println("\ninvalid number:" + event);
         }
-        System.out.print("object: ");
+        System.out.print("\nfor: " + d.getDayOfWeek()+ " " + d.getDayOfMonth() + d.getMonth() + " " + d.getYear() + "?\nchoice: ");
+        LocalDate quack = d;
+        if (!InputReader.yes_no(miao.nextLine())){
+        System.out.print("\nWhen? (YYYYMMDD)\nyear: ");
+        int year = InputReader.WhatTsInt(miao);
+        System.out.print("\nMonth: ");
+        int month = InputReader.WhatTsInt(miao);
+        System.out.print("\nday: ");
+        int day = InputReader.WhatTsInt(miao);
+        quack = LocalDate.of(year,month,day);
+        }
+        InputReader.WhatTs(miao);
+        System.out.print("\nobject: ");
         String obj = miao.nextLine();
         System.out.println("\n");
-        Event e = new Event(null,event, obj, d, false, LocalDate.now());
+
+        Event e = new Event(null,event, obj, quack, false, LocalDate.now());
         return e;
     }
 
@@ -148,9 +168,13 @@ public class EventHandler {
     // PR -> print results
     private static void PR(ArrayList<Event> e){
         System.out.println("Events:");
-        for (Event x : e){
-            String tipo = converti(x.event());
-            System.out.println(tipo + " - " + x.GetObj() + " - " + x.GetWhen() + " - " + x.GetDone());
+        if (e == null){
+            System.out.println("\n0 results found. ==^.^==");
+        } else{
+            for (Event x : e){
+                String tipo = converti(x.event());
+                System.out.println(tipo + " - " + x.GetObj() + " - " + x.GetWhen() + " - " + x.GetDone());
+            }
         }
     }
 
@@ -169,5 +193,4 @@ public class EventHandler {
         );
     }
 }
-
 // last line

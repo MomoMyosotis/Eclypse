@@ -38,8 +38,8 @@ public class CM {
         // GENERAL
         register("general", "time and date", new TimeDateCmd());
         register("general", "weather anywhere", new WeatherCmd());
-        // we got this far =)
         register("general", "calendar - TODO list - reminders", new CalendarCmd());
+        // we got this far =)
         register("general", "send emails", new SendEmailCmd());
 
         // AI

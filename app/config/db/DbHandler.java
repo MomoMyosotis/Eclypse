@@ -74,7 +74,11 @@ public class DbHandler {
             if (gioie.GetWhen() != null){
                 a = gioie.GetWhen().toString();
             }
-            bs.setInt(1, gioie.event());
+            if (gioie.event() != null){
+                bs.setInt(1, gioie.event());
+            } else{
+                bs.setInt(1, 2);
+            }
             bs.setString(2, gioie.GetObj());
             bs.setString(3, a);
             if(gioie.GetDone() == null){

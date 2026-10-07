@@ -2,7 +2,9 @@
 
 package app.modules.computer;
 import java.lang.ProcessBuilder;
-import app.config.dependencies.Config;
+
+import app.config.PyDependencies.Config;
+
 import java.io.File;
 import java.io.IOException;
 

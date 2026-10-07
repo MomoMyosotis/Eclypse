@@ -2,9 +2,11 @@
 
 package app.modules.computer;
 import app.helpers.general.Levenshit;
-import app.helpers.general.SelectionSort;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Locale;
+import java.util.PriorityQueue;
 import java.nio.file.*;
 import java.io.IOException;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -12,6 +14,11 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class FileSearch {
 
     private FileSearch(){}
+
+    private static final Comparator<FileInfo> BEST_MATCH_FIRST =
+        Comparator.comparingInt(FileInfo::getScore).reversed()
+            .thenComparing(FileInfo::getName, String.CASE_INSENSITIVE_ORDER)
+            .thenComparing(FileInfo::getPath);
 
     // oggetto FileInfo (nome - path - score)
     public static class FileInfo{
@@ -39,20 +46,23 @@ public class FileSearch {
     }
 
     public static void search(String filename, int mr){
-
-        ArrayList<FileInfo> gioie = new ArrayList<>();
-        // chiamo la funzione che cerca i risultati
-        gioie = searchinator(filename);
-
-        stampagioie(gioie, mr);
+        if (mr <= 0){
+            return;
+        }
+        stampagioie(findMatches(filename, mr), mr);
     }
 
     // funzione che si occupa della ricerca
     public static ArrayList<FileInfo> searchinator (String ts){
+        return findMatches(ts, 0);
+    }
 
+    private static ArrayList<FileInfo> findMatches(String query, int maxResults){
         System.out.println("\nsearching...");
-        // trovati i risultati vanno messi in una ArrayList
-        ArrayList<FileInfo> quacked = new ArrayList<>();
+        ArrayList<FileInfo> matches = new ArrayList<>();
+        PriorityQueue<FileInfo> bestMatches = maxResults > 0
+            ? new PriorityQueue<>(Math.min(maxResults, 64), BEST_MATCH_FIRST.reversed())
+            : null;
 
         // da dove inizia a cercare
         Path directory = Paths.get(System.getProperty("user.home"));
@@ -63,11 +73,18 @@ public class FileSearch {
                 public FileVisitResult visitFile(Path path, BasicFileAttributes attrs){
                     String name = path.getFileName().toString();
                     String percorso = path.toString();
-                    int score = valid(name, ts);
+                    int score = valid(name, query);
 
                     if (score != -1){
-                        FileInfo miao = new FileInfo(name, percorso, score);
-                        quacked.add(miao);
+                        FileInfo match = new FileInfo(name, percorso, score);
+                        if (bestMatches == null){
+                            matches.add(match);
+                        } else if (bestMatches.size() < maxResults){
+                            bestMatches.add(match);
+                        } else if (BEST_MATCH_FIRST.compare(match, bestMatches.peek()) < 0){
+                            bestMatches.poll();
+                            bestMatches.add(match);
+                        }
                     }
                     return FileVisitResult.CONTINUE;
                 }
@@ -80,8 +97,12 @@ public class FileSearch {
         } catch( IOException e){
             e.printStackTrace();
         }
-        // ritorna la lista ordinata e completa
-        return quacked;
+
+        if (bestMatches != null){
+            matches.addAll(bestMatches);
+            matches.sort(BEST_MATCH_FIRST);
+        }
+        return matches;
     }
 
     // decide se un nome è close enough o no && già che ci siamo assegna score
@@ -92,35 +113,32 @@ public class FileSearch {
         }
 
         // remove formati
-        String[] temp = found.split("\\.");
-        found = temp[0];
-        temp = given.split("\\.");
-        given = temp[0];
+        int extension = found.indexOf('.');
+        if (extension >= 0){
+            found = found.substring(0, extension);
+        }
+        extension = given.indexOf('.');
+        if (extension >= 0){
+            given = given.substring(0, extension);
+        }
         // if they match with different formats
         if (found.equals(given)){
             return 99;
         }
 
         // li metto entrambi in minuscolo
-        given = given.toLowerCase();
-        found = found.toLowerCase();
-        if (found.equals(given)){
+        if (found.equalsIgnoreCase(given)){
             return 98;
         }
 
         // se ha una fitness maggiore del 45%
-        int pt = Levenshit.levenstein(found, given);
-        if(pt > 45){
-            return pt;
-        }
-
-        return -1;
+        return Levenshit.scoreAboveThreshold(
+            found.toLowerCase(Locale.ROOT), given.toLowerCase(Locale.ROOT), 45);
     }
 
     // stampa il tutto
     static void stampagioie(ArrayList<FileInfo> gioie, int mr){
-        // ordino l'ArrayList
-        SelectionSort.selectionsort(gioie, 0);
+        gioie.sort(BEST_MATCH_FIRST);
 
         if (mr > gioie.size()){
             mr = gioie.size();

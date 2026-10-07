@@ -21,6 +21,7 @@ public class DbInit {
             e.printStackTrace();
             return false;
         }
+        System.out.println("\nDataBase found and working!");
         return true;
     }
 

@@ -1,9 +1,9 @@
 // first line
 
 package app.config;
-
-import app.config.dependencies.Config;
 import app.config.db.DbInit;
+import app.config.PyDependencies.Config;
+import app.config.ceteras.BdayMover;;
 
 public class StatusChecker {
     private StatusChecker(){}
@@ -15,6 +15,10 @@ public class StatusChecker {
         if (!DbInit.init()){
             return false;
         }
+        if (!BdayMover.BdayInator()){
+            return false;
+        }
+        System.out.println("\nEclypse is ready! :3");
         return true;
     }
 }
