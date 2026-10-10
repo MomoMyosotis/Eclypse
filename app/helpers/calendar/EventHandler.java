@@ -2,27 +2,14 @@
 
 package app.helpers.calendar;
 import java.time.LocalDate;
-import java.util.Scanner;
 import java.util.ArrayList;
 import app.config.db.DbHandler;
 import app.helpers.events.InputReader;
 
 public class EventHandler {
     private EventHandler(){}
-
-    /*
-        EVENTS
-    - LoadEvents() -> DONE
-    - PrintEvents() -> DONE
-    - SearchEvents() -> DONE
-    - EventBuilder() -> DONE
-    - RegisterEvents() -> DONE
-    - ReadSingleEvent() -> DONE
-    - UpdateEvents() -> DONE
-    - DeleteEvents() -> DONE
-    */
     
-    public static void Event_Inator (Scanner miao, LocalDate d){
+    public static void Event_Inator (LocalDate d){
         boolean running = true;
         while (running){
             System.out.println(
@@ -36,18 +23,18 @@ public class EventHandler {
                 "  0. Back to calendar"
             );
             System.out.print("Choose an action: ");
-            String input = miao.nextLine();
+            String input = InputReader.WhatTs();
 
             switch (input){
                 case "1" -> {
                     ArrayList<Event> gioie = LE(d.withDayOfMonth(1)); // it should load the incoming events for the month currently seeing
                     PR(gioie);
                 }
-                case "2" -> PR(SE(d, miao));
-                case "3" -> System.out.println(RE(miao, d) ? "Event created." : "Event could not be created.");
-                case "4" -> RSE(miao, d);
-                case "5" -> System.out.println(UE(miao, d) ? "Event updated." : "Event could not be updated.");
-                case "6" -> System.out.println(DE(miao, d) ? "Event deleted." : "Event could not be deleted.");
+                case "2" -> PR(SE(d));
+                case "3" -> System.out.println(RE(d) ? "Event created." : "Event could not be created.");
+                case "4" -> RSE(d);
+                case "5" -> System.out.println(UE(d) ? "Event updated." : "Event could not be updated.");
+                case "6" -> System.out.println(DE(d) ? "Event deleted." : "Event could not be deleted.");
                 case "0" -> running = false;
                 default -> System.out.println("Invalid choice.");
             }
@@ -55,11 +42,11 @@ public class EventHandler {
     }
 
     // UE -> Update Event
-    private static boolean UE(Scanner miao, LocalDate d){
+    private static boolean UE(LocalDate d){
         try {
-            Event old = SE(d, miao).get(0);
-            Event e = MBE(miao, d);
-            DbHandler.Update(ABE(old.GetId(), e.event(), e.GetObj(), e.GetWhen(), e.GetDone(), old.GetCreated()));
+            Event old = SE(d).get(0);
+            Event e = MBE(d);
+            DbHandler.Events.Update(ABE(old.GetId(), e.event(), e.GetObj(), e.GetWhen(), e.GetDone(), old.GetCreated()));
             return true;
         } catch (Exception a){
             a.printStackTrace();
@@ -68,11 +55,11 @@ public class EventHandler {
     }
 
     // DE -> Delete Event
-    private static boolean DE(Scanner miao, LocalDate d){
-        Event e = SE(d, miao).get(0);
+    private static boolean DE( LocalDate d){
+        Event e = SE(d).get(0);
         int td = e.GetId();
         try{
-            DbHandler.Kill(td);
+            DbHandler.Events.Kill(td);
             return true;
         } catch (Exception a){
             a.printStackTrace();
@@ -81,15 +68,20 @@ public class EventHandler {
     }
 
     // RSE -> Read Single Event
-    private static void RSE(Scanner miao, LocalDate d){
-        PSR(DbHandler.Find(MBE(miao, d)).get(0));
+    private static void RSE( LocalDate d){
+        Event e = DbHandler.Events.Find(MBE(d)).get(0);
+        PSR(e);
+        System.out.print("\nset done?\nchoice: ");
+        if (InputReader.yes_no(InputReader.WhatTs())){
+            e.SetDone(e);
+        }
     }
 
     // RE -> register event
-    private static boolean RE(Scanner miao, LocalDate d){
+    private static boolean RE( LocalDate d){
         try {
-            Event e = MBE(miao, d);
-            DbHandler.Create(e);
+            Event e = MBE(d);
+            DbHandler.Events.Create(e);
             return true;
         } catch (Exception e){
             e.printStackTrace();
@@ -103,12 +95,12 @@ public class EventHandler {
     }
 
     // MBE -> Manual Build Event
-    private static Event MBE(Scanner miao, LocalDate d){
+    private static Event MBE( LocalDate d){
         Integer event = 0;
 
         while (true){
             System.out.print("event table: 1 = bday 2 = appointment 3 = reminder [ENTER] = all types (only for search (default 2)\nchoice: ");
-            String value = miao.nextLine();
+            String value = InputReader.WhatTs();
             if (value.isEmpty()){
                 event = null;
                 break;
@@ -125,18 +117,18 @@ public class EventHandler {
         }
         System.out.print("\nfor: " + d.getDayOfWeek()+ " " + d.getDayOfMonth() + d.getMonth() + " " + d.getYear() + "?\nchoice: ");
         LocalDate quack = d;
-        if (!InputReader.yes_no(miao.nextLine())){
+        if (!InputReader.yes_no(InputReader.WhatTs())){
         System.out.print("\nWhen? (YYYYMMDD)\nyear: ");
-        int year = InputReader.WhatTsInt(miao);
+        int year = InputReader.WhatTsInt();
         System.out.print("\nMonth: ");
-        int month = InputReader.WhatTsInt(miao);
+        int month = InputReader.WhatTsInt();
         System.out.print("\nday: ");
-        int day = InputReader.WhatTsInt(miao);
+        int day = InputReader.WhatTsInt();
         quack = LocalDate.of(year,month,day);
         }
-        InputReader.WhatTs(miao);
+        InputReader.WhatTs();
         System.out.print("\nobject: ");
-        String obj = miao.nextLine();
+        String obj = InputReader.WhatTs();
         System.out.println("\n");
 
         Event e = new Event(null,event, obj, quack, false, LocalDate.now());
@@ -144,10 +136,10 @@ public class EventHandler {
     }
 
     // SE -> Search Events
-    private static ArrayList<Event> SE(LocalDate d, Scanner miao){
+    private static ArrayList<Event> SE(LocalDate d){
         ArrayList<Event> gioie = new ArrayList<>();
-        Event e = MBE(miao, d);
-        gioie.addAll(DbHandler.Find(e));
+        Event e = MBE(d);
+        gioie.addAll(DbHandler.Events.Find(e));
         if (gioie.isEmpty()){
             return null;
         }
@@ -160,7 +152,7 @@ public class EventHandler {
         for (int i = d.getDayOfMonth(); i < d.lengthOfMonth() +1; i++){
             LocalDate temp = LocalDate.of(d.getYear(),d.getMonthValue(),i);
             Event e = new Event(null, null, null, temp, null, null);
-            results.addAll(DbHandler.Find(e));
+            results.addAll(DbHandler.Events.Find(e));
         }
         return results;
     }
@@ -180,13 +172,13 @@ public class EventHandler {
 
     // converts type
     private static String converti(int event){
-        return DbHandler.Tipo(event);
+        return DbHandler.Events.Tipo(event);
     }
 
     // PSR -> print single result
     private static void PSR(Event e){
     System.out.println(
-        DbHandler.Tipo(e.event()) + " - " +
+        DbHandler.Events.Tipo(e.event()) + " - " +
         e.GetObj() + " - " +
         e.GetWhen() + " - " +
         e.GetDone()

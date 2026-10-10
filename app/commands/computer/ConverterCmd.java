@@ -2,9 +2,7 @@
 
 package app.commands.computer;
 import app.commands.Command;
-
 import java.io.IOException;
-import java.util.Scanner;
 import app.modules.computer.FileConvert;
 import app.helpers.events.InputReader;
 import app.helpers.local.Filepath;
@@ -12,8 +10,8 @@ import app.helpers.local.Filepath;
 public class ConverterCmd implements Command{
     
     @Override
-    public void execute(Scanner miao){
-        String path = Filepath.FP(miao);
+    public void execute(){
+        String path = Filepath.FP();
         String format = path.split("\\.")[1].toLowerCase();
         String turninto = format; // così di default non fa niente e ci risparmiamo rogne
         System.out.print("\nfile's extention is: "+ format + ".\nyou can turn it into a: ");
@@ -45,7 +43,7 @@ public class ConverterCmd implements Command{
         }
 
         System.out.print("\nproceed?  choice: ");
-        String choice = miao.nextLine();
+        String choice = InputReader.WhatTs();;
         System.out.println("\n");
         if (!InputReader.yes_no(choice)){;
             System.out.println("\nuser decided NOT to convert.\n");

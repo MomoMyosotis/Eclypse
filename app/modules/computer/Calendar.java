@@ -1,17 +1,17 @@
 // first line
 
 package app.modules.computer;
-import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.DateTimeException;
 import app.helpers.calendar.CalendarHandler;
 import app.helpers.calendar.EventHandler;
+import app.helpers.events.InputReader;
 import app.helpers.general.Clear;
 
 public class Calendar {
     private Calendar(){}
 
-    public static void organise(Scanner miao, LocalDate date){
+    public static void organise(LocalDate date){
         boolean running = true;
         while (running){
             Clear.clean();
@@ -25,33 +25,33 @@ public class Calendar {
                 "  0. Quit"
             );
             System.out.print("Choose an action: ");
-            String input = miao.nextLine();
+            String input = InputReader.WhatTs();
 
             switch (input){
                 case "1" -> date = date.minusMonths(1);
                 case "2" -> date = date.plusMonths(1);
                 case "3" -> date = date.minusYears(1);
                 case "4" -> date = date.plusYears(1);
-                case "5" -> date = readDate(miao, date);
-                case "6" -> EventHandler.Event_Inator(miao, date);
+                case "5" -> date = readDate(date);
+                case "6" -> EventHandler.Event_Inator(date);
                 case "0" -> running = false;
                 default -> System.out.println("Invalid choice.");
             }
         }
     }
 
-    private static LocalDate readDate(Scanner miao, LocalDate currentDate){
+    private static LocalDate readDate(LocalDate currentDate){
         try {
             System.out.print("Year (blank keeps " + currentDate.getYear() + "): ");
-            String value = miao.nextLine();
+            String value = InputReader.WhatTs();
             int year = value.isBlank() ? currentDate.getYear() : Integer.parseInt(value);
 
             System.out.print("Month (blank keeps " + currentDate.getMonthValue() + "): ");
-            value = miao.nextLine();
+            value = InputReader.WhatTs();
             int month = value.isBlank() ? currentDate.getMonthValue() : Integer.parseInt(value);
 
             System.out.print("Day (blank keeps " + currentDate.getDayOfMonth() + "): ");
-            value = miao.nextLine();
+            value = InputReader.WhatTs();
             int day = value.isBlank() ? currentDate.getDayOfMonth() : Integer.parseInt(value);
 
             return LocalDate.of(year, month, day);

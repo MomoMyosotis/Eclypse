@@ -5,14 +5,12 @@ import app.modules.computer.FileOpen;
 import app.commands.Command;
 import app.helpers.local.Filepath;
 
-import java.util.Scanner;
-
 public class EditFileCmd implements Command {
 
     @Override
-    public void execute(Scanner miao){
+    public void execute(){
 
-        String zighy = Filepath.FP(miao);
+        String zighy = Filepath.FP();
         try {
             FileOpen.sesamo(zighy);
         } catch (Exception e){

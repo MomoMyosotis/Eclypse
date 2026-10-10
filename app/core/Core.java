@@ -1,7 +1,6 @@
 // first line
 
 package app.core;
-import java.util.Scanner;
 
 import app.helpers.events.InputReader;
 public class Core {
@@ -11,12 +10,12 @@ public class Core {
     }
 
     // GETS THE COMMAND NUMBER
-    public static int start(Scanner miao){
+    public static int start(){
         menu();
         
         while (true){
             System.out.println("\n\nrequest: ");
-            String temp_cmd = InputReader.WhatTs(miao).trim();
+            String temp_cmd = InputReader.WhatTs().trim();
             try {
                 int quackie = Integer.parseInt(temp_cmd);
                 if (quackie == -1 || CM.contains(quackie)){

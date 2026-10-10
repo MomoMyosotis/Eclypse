@@ -5,18 +5,22 @@ import java.util.Scanner;
 
 public class InputReader {
     private InputReader(){}
+    private static final Scanner MIAO = new Scanner(System.in);
 
-    public static String WhatTs(Scanner miao){
-        String ts = miao.nextLine();
-        return ts;
+    public static void meowCloser(){
+        MIAO.close();
     }
 
-    public static int WhatTsInt(Scanner miao){
-        int i = miao.nextInt();
-        return i;
+    public static String WhatTs(){
+        return MIAO.nextLine();
+    }
+
+    public static int WhatTsInt(){
+        return MIAO.nextInt();
     }
     
     public static boolean yes_no(String z){
+        
         if(z.equals("") ||
             (z.equals("yes")) ||
             (z.equals("yup")) ||

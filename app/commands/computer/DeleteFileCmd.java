@@ -5,13 +5,11 @@ import app.modules.computer.FileDelete;
 import app.commands.Command;
 import app.helpers.local.Filepath;
 
-import java.util.Scanner;
-
 public class DeleteFileCmd implements Command {
 
     @Override
-    public void execute(Scanner miao){
-        String zighy = Filepath.FP(miao);
+    public void execute(){
+        String zighy = Filepath.FP();
         try {
             FileDelete.delete(zighy);
         } catch (Exception e){

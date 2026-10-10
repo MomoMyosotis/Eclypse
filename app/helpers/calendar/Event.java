@@ -2,6 +2,7 @@
 
 package app.helpers.calendar;
 import java.time.LocalDate;
+import app.config.db.DbHandler;
 
 public class Event{
     private Integer id;
@@ -37,6 +38,17 @@ public class Event{
     }
     public LocalDate GetCreated(){
         return created;
+    }
+
+    public Boolean SetDone(Event e){
+        Event quack = new Event(e.GetId(), e.event(), e.GetObj(), e.GetWhen(), true, e.GetCreated());
+        try{
+            DbHandler.Events.Update(quack);
+            return true;
+        } catch (Exception a){
+            a.printStackTrace();
+            return false;
+        }
     }
 }
 

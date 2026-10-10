@@ -1,11 +1,11 @@
 // first
 
 package app;
-import java.util.Scanner;
 import app.config.StatusChecker;
 import app.core.Core;
 import app.core.Dispatcher;
 import app.helpers.general.Clear;
+import app.helpers.events.InputReader;
 
 public class Main {
     public static void main (String[] args){
@@ -13,20 +13,21 @@ public class Main {
         System.out.println("Eclypse is being loaded...");
         if (!StatusChecker.checker()){
             System.out.println("some of the dependencies required cannot be configurated.\nERR 01");
+            InputReader.meowCloser();
             return;
         }
-        Scanner miao = new Scanner(System.in);
         while (true){
-            int command = Core.start(miao);
+            int command = Core.start();
             Clear.clean();
             if (command == -1){
                 break;
             }
-            Dispatcher.dispatch(command, miao);
+            Dispatcher.dispatch(command);
             System.out.print("\npress enter to continue:\n");
-            miao.nextLine();
+            InputReader.WhatTs();
             System.out.println("");
         }
+        InputReader.meowCloser();
     }
 }
 

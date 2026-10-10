@@ -4,17 +4,16 @@ package app.commands.computer;
 import app.commands.Command;
 import app.helpers.events.InputReader;
 import app.modules.computer.FileSearch;
-import java.util.Scanner;
 
 public class SearchFileCmd implements Command {
 
     @Override
-    public void execute(Scanner miao){
+    public void execute(){
         System.out.println("\nfile name: ");
         
-        String zighy = InputReader.WhatTs(miao).trim();
+        String zighy = InputReader.WhatTs().trim();
         System.out.println("\nmax results: ");
-        int mr = Integer.parseInt(miao.nextLine().trim());
+        int mr = Integer.parseInt(InputReader.WhatTs().trim());
         try{
             if (mr <= 0){
                 System.out.println("\nmax results must be > 0.\n");

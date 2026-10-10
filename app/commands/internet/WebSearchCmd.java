@@ -6,12 +6,11 @@ import app.helpers.events.InputReader;
 import app.modules.internet.WebSearch;
 import java.util.Map;
 import java.util.Hashtable;
-import java.util.Scanner;
 
 public class WebSearchCmd implements Command {
 
     @Override
-    public void execute(Scanner miao){
+    public void execute(){
 
         Map<Integer, String> options = new Hashtable<>();
         options.put(1, "web_search");
@@ -24,7 +23,7 @@ public class WebSearchCmd implements Command {
         String choice;
         int loop = -1;
         while(loop < 1 || loop > 3){
-            choice = InputReader.WhatTs(miao);
+            choice = InputReader.WhatTs();
             if (choice.isBlank()){
                 return;
             }
@@ -34,7 +33,7 @@ public class WebSearchCmd implements Command {
             }
         }
         System.out.println("\n");
-        WebSearch.DispatchSearch(miao, options.get(loop).toString());
+        WebSearch.DispatchSearch(options.get(loop).toString());
     }
 }
 

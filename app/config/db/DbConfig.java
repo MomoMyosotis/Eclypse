@@ -21,7 +21,18 @@ public class DbConfig {
             WHERE type='table'
             AND name='DATA'
             """;
-
+    private static final String MAIL_ACCOUNT = """
+            SELECT name
+            FROM sqlite_master
+            WHERE type='table'
+            AND name='MAIL_ACCOUNT'
+            """;
+    private static final String VAULT = """
+            SELECT name
+            FROM sqlite_master
+            WHERE type='table'
+            AND name='VAULT'
+            """;
     public static String Get_Db_Path(){
         return DB_NAME;
     }
@@ -41,6 +52,16 @@ public class DbConfig {
             st.close();
             ResultSet data = st.executeQuery(DATA);
             if (!data.next()){
+                return false;
+            }
+            st.close();
+            ResultSet mail = st.executeQuery(MAIL_ACCOUNT);
+            if (!mail.next()){
+                return false;
+            }
+            st.close();
+            ResultSet vault = st.executeQuery(VAULT);
+            if (!vault.next()){
                 return false;
             }
             st.close();

@@ -6,8 +6,8 @@ package app.core;
 import app.commands.Command;
 import app.commands.ai.*;
 import app.commands.internet.*;
+import app.helpers.events.InputReader;
 import app.commands.computer.*;
-import app.commands.general.SendEmailCmd;
 import app.commands.general.TimeDateCmd;
 import app.commands.general.WeatherCmd;
 
@@ -77,13 +77,13 @@ public class CM {
         }
     }
 
-    public static void execute(int number, Scanner miao){
+    public static void execute(int number){
 
         if (!contains(number)){
             System.out.println("\nunknown cmd sry ==^.^==");
             return;
         }
-        commands.get(number - 1).command().execute(miao);
+        commands.get(number - 1).command().execute();
     }
 
     public record CommandItem(int number, String category, String label, Command command) {

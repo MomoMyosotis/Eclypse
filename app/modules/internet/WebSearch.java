@@ -1,7 +1,6 @@
 // first line
 
 package app.modules.internet;
-import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,7 +12,7 @@ import app.helpers.web.HttpHandler;
 public class WebSearch {
     private WebSearch(){}
 
-    public static void DispatchSearch(Scanner miao, String type){
+    public static void DispatchSearch(String type){
 
         final String duck = "https://duckduckgo.com/?q=";
         final String you = "https://www.youtube.com/results?search_query=";
@@ -21,13 +20,13 @@ public class WebSearch {
         final String wiki = "https://en.wikipedia.org/w/index.php?search=";
         switch (type){
             case "youtube":
-                Tubo(InputReader.WhatTs(miao), you, you_play);
+                Tubo(InputReader.WhatTs(), you, you_play);
                 break;
             case "wiki":
-                Search(InputReader.WhatTs(miao), wiki);
+                Search(InputReader.WhatTs(), wiki);
                 break;
             default:
-                Naviga(InputReader.WhatTs(miao), duck);
+                Naviga(InputReader.WhatTs(), duck);
                 break;
         }
     }

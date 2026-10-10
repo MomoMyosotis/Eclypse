@@ -23,7 +23,7 @@ public class BdayMover {
     // SAE -> search all results (just for BES())
     private static void SAE (){
         Event evee = EventHandler.ABE(null, 1, null, null, null, null);
-        for (Event e : DbHandler.Find(evee)){
+        for (Event e : DbHandler.Events.Find(evee)){
             BES(e);
         }
     }
@@ -33,7 +33,7 @@ public class BdayMover {
         if (e.GetWhen() != null && e.GetWhen().isBefore(LocalDate.now())){
             int yay = LocalDate.now().plusYears(1).getYear();
             LocalDate bl = LocalDate.of(yay, e.GetWhen().getMonthValue(), e.GetWhen().getDayOfMonth());
-            DbHandler.Update(EventHandler.ABE(e.GetId(), e.event(), e.GetObj(),bl, e.GetDone(), e.GetCreated()));
+            DbHandler.Events.Update(EventHandler.ABE(e.GetId(), e.event(), e.GetObj(),bl, e.GetDone(), e.GetCreated()));
         }
     }
 }

@@ -14,6 +14,28 @@ CREATE TABLE IF NOT EXISTS DATA (
     FOREIGN KEY (evento) REFERENCES TYPE(id)
 );
 
+CREATE TABLE IF NOT EXISTS MAIL_ACCOUNT (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    provider TEXT NOT NULL,
+    service TEXT,
+    address TEXT NOT NULL,
+    account_identifier TEXT,
+    username TEXT,
+    auth_method TEXT NOT NULL,
+    credential_reference TEXT,
+    access_token TEXT,
+    refresh_token TEXT,
+    expires_at TEXT,
+    scopes TEXT
+);
+
+CREATE TABLE IF NOT EXISTS VAULT (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    salt BLOB NOT NULL,
+    verifier BLOB NOT NULL,
+    iterations INTEGER NOT NULL
+);
+
 INSERT OR IGNORE INTO TYPE (tipo) VALUES ('B-Day');
 INSERT OR IGNORE INTO TYPE (tipo) VALUES ('appointment');
 INSERT OR IGNORE INTO TYPE (tipo) VALUES ('remind');
